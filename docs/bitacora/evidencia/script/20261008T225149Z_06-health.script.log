@@ -1,0 +1,8 @@
+== Estado de salud de oralab-26ai ==
+healthy
+
+== Puertos mapeados ==
+1521/tcp -> 0.0.0.0:1521
+1521/tcp -> [::]:1521
+8181/tcp -> 0.0.0.0:8181
+8181/tcp -> [::]:8181
