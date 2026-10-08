@@ -1,0 +1,12 @@
+== Descargando la imagen oficial de Oracle Database Free ==
+Imagen objetivo: container-registry.oracle.com/database/free:latest
+latest: Pulling from database/free
+Digest: sha256:f988b0c04c4c386cd306a2a914c0d7a9702d83acc31b064a28ad8eb6278a8fba
+Status: Image is up to date for container-registry.oracle.com/database/free:latest
+container-registry.oracle.com/database/free:latest
+
+== Huella digital de la imagen (digest sha256) ==
+container-registry.oracle.com/database/free@sha256:f988b0c04c4c386cd306a2a914c0d7a9702d83acc31b064a28ad8eb6278a8fba
+
+== Tamaño real en disco ==
+9.35781 GB
