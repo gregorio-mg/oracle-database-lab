@@ -1,0 +1,10 @@
+
+Session altered.
+
+CREATE TABLESPACE TBS_ACADEMIA DATAFILE 'academia01.dbf' SIZE 100M AUTOEXTEND ON NEXT 50M
+*
+ERROR at line 1:
+ORA-01543: tablespace 'TBS_ACADEMIA' already exists
+Help: https://docs.oracle.com/error-help/db/ora-01543/
+
+

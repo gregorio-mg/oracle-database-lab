@@ -1,0 +1,6 @@
+== Verificando si existe el contenedor 'oralab-26ai' ==
+== Creando el volumen de persistencia 'oralab-26ai-data' (si no existe) ==
+oralab-26ai-data
+== Desplegando el contenedor 'oralab-26ai' ==
+8846cec29cea408d30ac33b14a00723223e42c22fd6424bf3849fe55f6a67838
+== Contenedor creado. Verifica su estado con: docker ps ==
