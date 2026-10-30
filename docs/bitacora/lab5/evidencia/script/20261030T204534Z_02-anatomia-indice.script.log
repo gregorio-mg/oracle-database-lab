@@ -1,0 +1,9 @@
+== Analizando Anatomia de Indices B-Tree ==
+== Anatomia de Indices B-Tree (CLIENTE y PEDIDO) ==
+
+INDEX_NAME		  TABLE_NAME	  BLEVEL ALTURA    HOJAS      FILAS CLAVES_DIST CLUST_FACT
+------------------------- --------------- ------ ------ -------- ---------- ----------- ----------
+SYS_C008702		  CLIENTE	       1      2      187    100,000	100,000        914
+SYS_C008703		  PEDIDO	       2      3    1,875  1,000,000   1,000,000      5,207
+
+== Consulta anatomica completada ==
