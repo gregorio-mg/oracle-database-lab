@@ -1,12 +1,18 @@
 #!/usr/bin/env bash
-set -e
-
+set -euo pipefail
 source scripts/deployment/env/00-config.sh
 
-LOG_FILE="$EVID_LAB5/script/$(ts)_02-anatomia-indice.script.log"
+TS=$(ts)
+mkdir -p "$EVID_LAB5/script" "$EVID_LAB5/config"
+LOG_FILE="$EVID_LAB5/script/${TS}_02-anatomia-indice.script.log"
 
-echo "== Analizando Anatomia de Indices B-Tree ==" | tee "$LOG_FILE"
+echo "== Analizando anatomia de indices B-tree ==" | tee "$LOG_FILE"
+docker exec -i oralab-26ai sqlplus -s / as sysdba < scripts/lab5/02-anatomia-indice.sql 2>&1 | tee -a "$LOG_FILE"
 
-docker exec -i oralab-26ai sqlplus -s / as sysdba < database/migrations/V005_anatomia_indice.sql 2>&1 | tee -a "$LOG_FILE"
+for IDX in PK_PEDIDO IX_PED_CLIENTE; do
+  if [ -f scripts/ops/grafico-indice.sh ]; then
+    bash scripts/ops/grafico-indice.sh TIENDASUR "$IDX" "$EVID_LAB5/script/${TS}_02-grafico-${IDX}.script.log" 2>/dev/null || true
+  fi
+done
 
-echo "== Consulta anatomica completada ==" | tee -a "$LOG_FILE"
+echo "== Anatomia completada ==" | tee -a "$LOG_FILE"
