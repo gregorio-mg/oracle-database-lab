@@ -1,0 +1,13 @@
+== Midiendo tipos de indice (Parte D) ==
+===== 1. INDICE UNICO (Q13 - DNI/Email) =====
+BEGIN lab_tools.medir.consulta('Q13 sin indice', q'[SELECT id_cliente, nombre FROM tiendasur.cliente WHERE email = 'cli4711@ts.es']'); END;
+
+      *
+ERROR at line 1:
+ORA-06550: line 1, column 7:
+PLS-00201: identifier 'LAB_TOOLS.MEDIR' must be declared
+ORA-06550: line 1, column 7:
+PL/SQL: Statement ignored
+Help: https://docs.oracle.com/error-help/db/ora-06550/
+
+
