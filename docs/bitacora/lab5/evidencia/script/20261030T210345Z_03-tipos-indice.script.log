@@ -1,0 +1,12 @@
+== Midiendo tipos de indice (Parte D) ==
+===== 1. INDICE UNICO (Q13 - DNI/Email) =====
+BEGIN lab_tools.medir.consulta('Q13 sin indice', q'[SELECT id_cliente, nombre FROM tiendasur.cliente WHERE email = 'cli4711@ts.es']'); END;
+
+*
+ERROR at line 1:
+ORA-04063: package body "LAB_TOOLS.MEDIR" has errors
+ORA-06508: PL/SQL: could not find program unit being called: "LAB_TOOLS.MEDIR"
+ORA-06512: at line 1
+Help: https://docs.oracle.com/error-help/db/ora-04063/
+
+

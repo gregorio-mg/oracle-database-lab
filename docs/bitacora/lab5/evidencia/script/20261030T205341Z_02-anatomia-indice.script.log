@@ -1,0 +1,10 @@
+== Analizando anatomia de indices B-tree ==
+===== 1. Diccionario de indices de TiendaSur =====
+===== 2. INDEX_STATS sobre IX_PED_CLIENTE =====
+ANALYZE INDEX tiendasur.ix_ped_cliente VALIDATE STRUCTURE
+                        *
+ERROR at line 1:
+ORA-01418: specified index does not exist
+Help: https://docs.oracle.com/error-help/db/ora-01418/
+
+
