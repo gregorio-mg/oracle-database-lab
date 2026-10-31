@@ -1,0 +1,19 @@
+
+===== Escenario: hoy =====
+
+INDICES_EN_PEDIDO INDICES
+----------------- --------------------------------------------------------------------------------------------------------------
+                3 IX_PED_CLIENTE, IX_PED_FECHA, SYS_C009088
+BEGIN lab_tools.medir.dml('hoy: 2000 INSERT', q'[BEGIN FOR i IN 1 .. 2000 LOOP INSERT INTO tiendasur.pedido (id_pedido, id_cliente, fecha_pedido, estado, importe, canal, codigo_postal) VALUES (2000000 + i, MOD(i * 7919, 100000) + 1, SYSTIMESTAMP, 'P', 10 + MOD(i, 90), 'W', TO_CHAR(25000 + MOD(i * 31, 11000))); END LOOP; END;]', 2000); END;
+
+*
+ERROR at line 1:
+ORA-06550: line 1, column 144:
+PL/SQL: ORA-00904: "CANAL": invalid identifier
+ORA-06550: line 1, column 60:
+PL/SQL: SQL Statement ignored
+ORA-06512: at "LAB_TOOLS.MEDIR", line 58
+ORA-06512: at line 1
+Help: https://docs.oracle.com/error-help/db/ora-06550/
+
+
