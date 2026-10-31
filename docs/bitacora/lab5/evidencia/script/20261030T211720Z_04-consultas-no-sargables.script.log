@@ -1,0 +1,9 @@
+== Midiendo consultas no sargables e indices FBI (Parte E) ==
+===== 1. CONSULTA NO SARGABLE (Uso de funcion UPPER sobre columna) =====
+[Sin FBI (Full Table Scan)] Lecturas logicas: 85 | Lecturas fisicas: 0
+===== 2. CREACION DE INDICE BASADO EN FUNCION (FBI) =====
+[Con FBI (Index Range Scan)] Lecturas logicas: 4 | Lecturas fisicas: 0
+===== 3. BUSQUEDAS POR RANGO Y SELECTIVIDAD =====
+[Rango alta selectividad (pocos registros)] Lecturas logicas: 1869 | Lecturas fisicas: 0
+[Rango baja selectividad (mayor??a de registros)] Lecturas logicas: 95961 | Lecturas fisicas: 0
+== Pruebas de consultas no sargables completadas ==

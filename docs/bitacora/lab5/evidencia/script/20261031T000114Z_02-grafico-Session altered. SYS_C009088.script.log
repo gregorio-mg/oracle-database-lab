@@ -1,0 +1,6 @@
+ERROR:
+ORA-49100: Failed to process event statement [immediate trace name treedump level ]
+ORA-49601: syntax error: found "End-of-Statement": expecting one of: "=,<string>,<number>,CRASH,DEBUGGER,ORADEBUG" etc..
+Help: https://docs.oracle.com/error-help/db/ora-49100/
+
+

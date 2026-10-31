@@ -1,0 +1,153 @@
+
+===== Escenario: hoy =====
+
+INDICES_EN_PEDIDO INDICES
+----------------- --------------------------------------------------------------------------------------------------------------
+                3 IX_PED_CLIENTE, IX_PED_FECHA, SYS_C009088
+hoy: 2000 INSERT               filas=  2000 lecturas l??gicas=  14287 bloques modificados= 16179 redo=  2041 KB  159.4 ms | por fila: 8.1 bloques, 1045 bytes de redo
+hoy: 2000 UPDATE estado        filas=  2000 lecturas l??gicas=   4000 bloques modificados=     0 redo=     0 KB   25.4 ms | por fila: 0 bloques, 0 bytes de redo
+hoy: 2000 UPDATE importe       filas=  2000 lecturas l??gicas=   4000 bloques modificados=     0 redo=     0 KB   23.2 ms | por fila: 0 bloques, 0 bytes de redo
+hoy: 2000 DELETE               filas=  2000 lecturas l??gicas=  18689 bloques modificados= 16975 redo=  2041 KB  100.1 ms | por fila: 8.5 bloques, 1045 bytes de redo
+
+Session altered.
+
+
+PL/SQL procedure successfully completed.
+
+
+Index created.
+
+
+Index created.
+
+
+Index created.
+
+
+Index created.
+
+
+Index created.
+
+
+===== Escenario: compañero =====
+
+INDICES_EN_PEDIDO INDICES
+----------------- --------------------------------------------------------------------------------------------------------------
+                8 IX_PED_CANAL, IX_PED_CLIENTE, IX_PED_CLI_FEC, IX_PED_CP, IX_PED_EST, IX_PED_FECHA, IX_PED_FEC_CLI, SYS_C009088
+compa??ero: 2000 INSERT        filas=  2000 lecturas l??gicas=  34526 bloques modificados= 36292 redo=  4419 KB    252 ms | por fila: 18.1 bloques, 2262 bytes de redo
+compa??ero: 2000 UPDATE estado filas=  2000 lecturas l??gicas=   4000 bloques modificados=     0 redo=     0 KB   26.3 ms | por fila: 0 bloques, 0 bytes de redo
+compa??ero: 2000 UPDATE import filas=  2000 lecturas l??gicas=   4000 bloques modificados=     0 redo=     0 KB   31.3 ms | por fila: 0 bloques, 0 bytes de redo
+compa??ero: 2000 DELETE        filas=  2000 lecturas l??gicas=  38935 bloques modificados= 37091 redo=  4284 KB  224.1 ms | por fila: 18.5 bloques, 2194 bytes de redo
+
+===== Pregunta 1 · NECESIDAD: Monitoreo de uso =====
+Q2 ??ltimo mes                 filas=   8219 lecturas l??gicas=    634 f??sicas=    0     9.4 ms
+                               plan: TABLE ACCESS FULL PEDIDO
+Q3 c??digo postal              filas= 100000 lecturas l??gicas=  40390 f??sicas=    0   138.1 ms
+                               plan: TABLE ACCESS BY INDEX ROWID BATCHED PEDIDO > INDEX RANGE SCAN IX_PED_CP
+Q7 historial                   filas=     10 lecturas l??gicas=     12 f??sicas=    0      .3 ms
+                               plan: TABLE ACCESS BY INDEX ROWID PEDIDO > INDEX RANGE SCAN DESCENDING IX_PED_CLI_FEC
+Q8 contador                    filas=      1 lecturas l??gicas=    366 f??sicas=    0       6 ms
+                               plan: SORT AGGREGATE > INDEX FAST FULL SCAN IX_PED_CLI_FEC
+Q9 ??ltimos 20                 filas=     20 lecturas l??gicas=    618 f??sicas=    0    24.2 ms
+                               plan: COUNT STOPKEY > VIEW > SORT ORDER BY STOPKEY > TABLE ACCESS FULL PEDIDO
+Q12 pendientes                 filas= 100000 lecturas l??gicas=    618 f??sicas=    0     131 ms
+                               plan: SORT ORDER BY > TABLE ACCESS FULL PEDIDO
+
+INDEX_NAME       USA MON
+---------------- --- ---
+IX_PED_CANAL     NO  YES
+IX_PED_CLIENTE   NO  YES
+IX_PED_EST       NO  YES
+IX_PED_FECHA     NO  YES
+IX_PED_FEC_CLI   NO  YES
+SYS_C009088      NO  YES
+IX_PED_CLI_FEC   YES YES
+IX_PED_CP        YES YES
+
+===== Pregunta 2 · VIABILIDAD: Selectividad =====
+
+INDEX_NAME           CLAVES PCT_POR_VALOR_MEDIO VEREDICTO
+---------------- ---------- ------------------- ------------------------------------------------------------------------
+IX_PED_EST                1                 100 NO viable para igualdad: cada valor es m??s del 0,5 % de la tabla
+IX_PED_CANAL              1                 100 NO viable para igualdad: cada valor es m??s del 0,5 % de la tabla
+IX_PED_CP                 1                 100 NO viable para igualdad: cada valor es m??s del 0,5 % de la tabla
+IX_PED_FECHA            365                .274 viable
+IX_PED_CLIENTE        10000                 .01 viable
+IX_PED_CLI_FEC       100000                .001 viable
+IX_PED_FEC_CLI       100000                .001 viable
+SYS_C009088          100000                .001 viable
+
+===== Pregunta 4 · REDUNDANCIA =====
+
+REDUNDANTE       COLUMNAS                                     CUBIERTO_POR     COLUMNAS_DEL_OTRO
+---------------- -------------------------------------------- ---------------- --------------------------------------------
+IX_PED_CLIENTE   ID_CLIENTE                                   IX_PED_CLI_FEC   ID_CLIENTE, FECHA_PEDIDO
+IX_PED_FECHA     FECHA_PEDIDO                                 IX_PED_FEC_CLI   FECHA_PEDIDO, ID_CLIENTE
+
+===== Pregunta 5 · CICLO DE VIDA: Hacer INVISIBLE antes de borrar =====
+Q2 sin ix_ped_importe          filas=   8219 lecturas l??gicas=    634 f??sicas=    0     9.9 ms
+                               plan: TABLE ACCESS FULL PEDIDO
+
+Session altered.
+
+
+PL/SQL procedure successfully completed.
+
+
+Session altered.
+
+
+PL/SQL procedure successfully completed.
+
+
+PL/SQL procedure successfully completed.
+
+
+Index created.
+
+
+Index created.
+
+
+PL/SQL procedure successfully completed.
+
+
+PL/SQL procedure successfully completed.
+
+
+Index created.
+
+
+PL/SQL procedure successfully completed.
+
+
+Index created.
+
+
+PL/SQL procedure successfully completed.
+
+
+TABLE_NA INDEX_NAME	      UNIQUENES VISIBILIT
+-------- -------------------- --------- ---------
+CLIENTE  SYS_C009087	      UNIQUE	VISIBLE
+CLIENTE  UX_CLI_DNI	      UNIQUE	VISIBLE
+CLIENTE  UX_CLI_EMAIL	      UNIQUE	VISIBLE
+PEDIDO	 IX_PED_CLI_FEC_CUB   NONUNIQUE VISIBLE
+PEDIDO	 IX_PED_CP	      NONUNIQUE VISIBLE
+PEDIDO	 IX_PED_FECHA	      NONUNIQUE VISIBLE
+PEDIDO	 IX_PED_PENDIENTES    NONUNIQUE VISIBLE
+PEDIDO	 SYS_C009088	      UNIQUE	VISIBLE
+
+8 rows selected.
+
+
+===== Escenario: V005 =====
+
+INDICES_EN_PEDIDO INDICES
+----------------- --------------------------------------------------------------------------------------------------------------
+                5 IX_PED_CLI_FEC_CUB, IX_PED_CP, IX_PED_FECHA, IX_PED_PENDIENTES, SYS_C009088
+V005: 2000 INSERT              filas=  2000 lecturas l??gicas=  22622 bloques modificados= 24447 redo=  3210 KB    203 ms | por fila: 12.2 bloques, 1643 bytes de redo
+V005: 2000 UPDATE estado       filas=  2000 lecturas l??gicas=   4000 bloques modificados=     0 redo=     0 KB   34.4 ms | por fila: 0 bloques, 0 bytes de redo
+V005: 2000 UPDATE importe      filas=  2000 lecturas l??gicas=   4000 bloques modificados=     0 redo=     0 KB   31.9 ms | por fila: 0 bloques, 0 bytes de redo
+V005: 2000 DELETE              filas=  2000 lecturas l??gicas=  26818 bloques modificados= 25033 redo=  2981 KB    132 ms | por fila: 12.5 bloques, 1526 bytes de redo

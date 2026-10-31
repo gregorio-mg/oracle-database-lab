@@ -1,0 +1,7 @@
+== Midiendo tipos de indice (Parte D) ==
+===== 1. INDICE UNICO (Q13 - DNI/Email) =====
+[Q13 sin indice] Lecturas logicas: 192 | Lecturas fisicas: 0
+===== 2. INDICE COMPUESTO Y CUBRIENTE (Q7 - Historial cliente) =====
+[Q7 con PK] Lecturas logicas: 295 | Lecturas fisicas: 1
+[Q7 compuesto] Lecturas logicas: 24 | Lecturas fisicas: 1
+== Pruebas de tipos de indice completadas ==

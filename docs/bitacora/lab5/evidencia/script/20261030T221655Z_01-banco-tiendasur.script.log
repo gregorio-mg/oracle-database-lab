@@ -1,0 +1,87 @@
+== Aplicando Migracion V004 y preparando Banco TiendaSur ==
+== 1. Creacion de Tablas TiendaSur ==
+
+PL/SQL procedure successfully completed.
+
+
+PL/SQL procedure successfully completed.
+
+
+Table created.
+
+
+Table created.
+
+== Poblando CLIENTE (100,000 filas) ==
+
+100000 rows created.
+
+
+Commit complete.
+
+== Poblando PEDIDO (1,000,000 filas) ==
+
+1000000 rows created.
+
+
+Commit complete.
+
+== Recopilando Estadisticas ==
+
+PL/SQL procedure successfully completed.
+
+
+PL/SQL procedure successfully completed.
+
+== 2. Creacion de esquema y paquete LAB_TOOLS.MEDIR ==
+DECLARE
+*
+ERROR at line 1:
+ORA-65096: common user or role name must start with prefix C##
+ORA-06512: at line 6
+Help: https://docs.oracle.com/error-help/db/ora-65096/
+
+
+CREATE OR REPLACE PACKAGE LAB_TOOLS.medir IS
+*
+ERROR at line 1:
+ORA-01435: user does not exist
+Help: https://docs.oracle.com/error-help/db/ora-01435/
+
+
+CREATE OR REPLACE PACKAGE BODY LAB_TOOLS.medir IS
+*
+ERROR at line 1:
+ORA-01435: user does not exist
+Help: https://docs.oracle.com/error-help/db/ora-01435/
+
+
+GRANT EXECUTE ON LAB_TOOLS.medir TO PUBLIC
+                           *
+ERROR at line 1:
+ORA-04042: procedure, function, package, or package body does not exist
+Help: https://docs.oracle.com/error-help/db/ora-04042/
+
+
+== 3. Perfilado de tablas ==
+
+TABLA	TOTAL_FILAS
+------- -----------
+CLIENTE      100000
+PEDIDO	    1000000
+
+2 rows selected.
+
+== 4. Prueba Herramienta de Medida ==
+BEGIN LAB_TOOLS.medir.prueba_pk; END;
+
+      *
+ERROR at line 1:
+ORA-06550: line 1, column 7:
+PLS-00201: identifier 'LAB_TOOLS.MEDIR' must be declared
+ORA-06550: line 1, column 7:
+PL/SQL: Statement ignored
+Help: https://docs.oracle.com/error-help/db/ora-06550/
+
+
+== Proceso completado exitosamente ==
