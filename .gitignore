@@ -1,3 +1,4 @@
 config/.env
 backups/
 backups/
+scripts/ops/marca.sql
