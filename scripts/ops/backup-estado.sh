@@ -1,9 +1,11 @@
 #!/usr/bin/env bash
-# scripts/ops/backup-estado.sh - copia en frío y consistente del estado del laboratorio.
+# scripts/ops/backup-estado.sh — copia en frío y consistente del estado del laboratorio.
 # Copia el volumen completo y, si los hay, los archivos de la base que viven FUERA del volumen.
-# Uso: bash scripts/ops/backup-estado.sh <etiqueta-en-kebab-case>   (p. ej.: lab3-final)
+# Uso: bash scripts/ops/backup-estado.sh <etiqueta-en-kebab-case>     (p. ej.: lab3-final)
 set -euo pipefail
 source scripts/deployment/env/00-config.sh
+[ -f scripts/ops/cabecera.sh ] && { source scripts/ops/cabecera.sh "backup-estado-${1:-}" || exit 2; }   # Lab 6: cabecera de evidencia
+docker info > /dev/null 2>&1 || { echo "ERROR: Docker no responde (¿está arrancado Docker Desktop o el servicio docker?). No se ha tocado nada." >&2; exit 1; }
 
 ETIQUETA="${1:?Uso: backup-estado.sh <etiqueta, p. ej. lab3-final>}"
 [[ "$ETIQUETA" =~ ^[a-z0-9][a-z0-9-]*$ ]] || { echo "La etiqueta debe ir en kebab-case (p. ej. lab3-final)"; exit 2; }
@@ -17,11 +19,11 @@ docker volume inspect "$VOL_NAME" > /dev/null || { echo "No existe el volumen $V
 mkdir -p "$DEST/extras"
 USADO=$(docker run --rm -v "$VOL_NAME":/v:ro "$HELPER_IMG" du -sm /v | cut -f1)
 LIBRE=$(df -Pm "$BACKUP_DIR" | awk 'NR==2 {print $4}')
-echo "Volumen: ${USADO} MB . libre en backups/: ${LIBRE} MB"
+echo "Volumen: ${USADO} MB · libre en backups/: ${LIBRE} MB"
 [ "$LIBRE" -gt "$USADO" ] || { echo "Espacio insuficiente para la copia"; exit 1; }
 
 echo "== 2. Inventario de archivos (base abierta) =="
-docker exec -i "$CONT_NAME" sqlplus -s -L / as sysdba \
+docker exec -i -e NLS_LANG=AMERICAN_AMERICA.AL32UTF8 "$CONT_NAME" sqlplus -s -L / as sysdba \
   < scripts/ops/inventario-archivos.sql > "$DEST/inventario.txt"
 cat "$DEST/inventario.txt"
 
@@ -30,9 +32,9 @@ echo "== 3. Cobertura: ¿está todo dentro de $DATA_ROOT (el volumen)? =="
 grep '^FILE|' "$DEST/inventario.txt" | cut -d'|' -f3 | sort -u | while read -r f; do
   real=$(docker exec "$CONT_NAME" readlink -f "$f")
   if [[ "$real" == "$DATA_ROOT"/* ]]; then
-    echo "  dentro $f"
+    echo "  dentro  $f"
   else
-    echo "  FUERA  $f"
+    echo "  FUERA   $f"
     echo "$real" >> "$DEST/extras.lst"
   fi
 done
@@ -41,7 +43,7 @@ done
 trap 'echo "== Arranque del contenedor =="; docker start "$CONT_NAME" > /dev/null' EXIT
 
 echo "== 4. Parada limpia: SHUTDOWN IMMEDIATE y docker stop =="
-echo "SHUTDOWN IMMEDIATE" | docker exec -i "$CONT_NAME" sqlplus -s -L / as sysdba
+echo "SHUTDOWN IMMEDIATE" | docker exec -i -e NLS_LANG=AMERICAN_AMERICA.AL32UTF8 "$CONT_NAME" sqlplus -s -L / as sysdba
 docker stop -t 120 "$CONT_NAME" > /dev/null
 
 echo "== 5. Copia del volumen (tar + gzip, conservando dueños y permisos) =="
@@ -66,7 +68,7 @@ echo "== 7. Manifiesto y sumas SHA-256 =="
   echo "contenedor=$CONT_NAME"
   echo "volumen=$VOL_NAME"
   echo "imagen=$(docker inspect -f '{{.Config.Image}}' "$CONT_NAME")"
-  echo "git_commit=$(git rev-parse --short HEAD 2>/dev/null || echo n/a)"
+  echo "git_commit=$(git rev-parse --short HEAD 2> /dev/null || echo n/a)"
   echo "tipo=copia en frio consistente (SHUTDOWN IMMEDIATE)"
   echo "archivos_fuera_del_volumen=$n"
 } > "$DEST/manifiesto.txt"
