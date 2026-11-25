@@ -30,7 +30,7 @@ No he usado IA.
 ```sql
 
 ```
-- **Dónde lo usé (parte, script o pregunta):** 
-- **Propósito (para qué lo necesitaba):** 
-- **Qué hace (con mis palabras; línea a línea si es SQL corto):** 
-- **Evidencia de ejecución (archivo de docs/bitacora/lab6/evidencia con mi cabecera):** 
+- **Dónde lo usé (parte, script o pregunta): script** 
+- **Propósito (para qué lo necesitaba): Lo use a modo de arnes ante algun posible fallo o malineterpretacion en algun tramo** 
+- **Qué hace (con mis palabras; línea a línea si es SQL corto):No genera código ni ejecuta consultas por mí; actúa como guía de verificación para interpretar vistas de diagnóstico como V$SESSION o V$LOCK, confirmar que la intervención aplicada (como ALTER SYSTEM KILL SESSION '59,56880' IMMEDIATE;, que cierra la sesión bloqueante y deshace su transacción al instante) es la mínima necesaria, y localizar datos concretos dentro de mis propios logs.** 
+- **Evidencia de ejecución (archivo de docs/bitacora/lab6/evidencia con mi cabecera):docs/bitacora/lab6/evidencia/script/20261125T183938Z_08-diagnostico.script.log y docs/bitacora/lab6/evidencia/script/20261125T185127Z_09-verificacion-final.script.log** 
